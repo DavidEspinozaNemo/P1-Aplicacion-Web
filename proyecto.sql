@@ -1,40 +1,49 @@
 CREATE TABLE Empleado
-(id NUMBER (3),
-nombre varchar2(20),
-apellido1 varchar2(20),
-apellido2 varchar2(20),
-salario number(9,2),
-fecha date,
-correo varchar2(20),
-contacto varchar2(9),
+(id NUMBER GENERATED ALWAYS AS IDENTITY,
+nombre varchar2(20) not null,
+apellido1 varchar2(20) not null,
+apellido2 varchar2(20)not null,
+salario number(9,2)not null,
+fecha date not null,
+correo varchar2(20) not null,
+contacto varchar2(9) not null,
 CONSTRAINT empleado_pk PRIMARY KEY (id)
 );
 
 CREATE TABLE Cliente
-(id NUMBER (4),
-nombre varchar2(20),
-apellido1 varchar2(20),
-apellido2 varchar2(20),
-fecha_registro date,
+(id NUMBER GENERATED ALWAYS AS IDENTITY,
+nombre varchar2(20) not null,
+apellido1 varchar2(20) not null,
+apellido2 varchar2(20) not null,
+fecha_registro date not null,
 CONSTRAINT cliente_pk PRIMARY KEY (id)
 );
 
-CREATE TABLE Provedor
-(id NUMBER (3),
-nombre varchar2(20),
-fecha_registro date,
+create TABLE Provedor
+(iD NUMBER GENERATED ALWAYS AS IDENTITY,
+nombre varchar2(20) not null,
+fecha_registro date not null,
 CONSTRAINT provedor_pk PRIMARY KEY (id)
 );
 
+
 CREATE TABLE Producto
-(id NUMBER (3),
-nombre varchar2(20),
-descripcion varchar(100),
-precio number(6,2),
+(id NUMBER GENERATED ALWAYS AS IDENTITY,
+nombre varchar2(20) not null,
+descripcion varchar(100) not null,
+precio number(6,2) not null,
 CONSTRAINT producto_pk PRIMARY KEY (id)
 );
 
 
+create table Bitacora_producto
+(id NUMBER generated always as identity,
+nombre_producto varchar2(20) not null,
+precio_viejo number(6,2) not null,
+precio_nuevo number(6,2) not null,
+fecha_cambio date  not null,
+CONSTRAINT Bitacora_producto_pk PRIMARY KEY (id)
+);
 
 
 
@@ -42,31 +51,33 @@ CONSTRAINT producto_pk PRIMARY KEY (id)
 
 
 CREATE TABLE Venta
-(id NUMBER (7),
-fecha date,
-monto_total number(9,2),
-empleado number (3), 
-cliente number (4),
+(id NUMBER GENERATED ALWAYS AS IDENTITY,
+fecha date not null,
+monto_total number(9,2) not null,
+empleado number (3) not null,  
+cliente number (4) not null,
 CONSTRAINT venta_pk PRIMARY KEY (id),
 CONSTRAINT id_empleado FOREIGN KEY (empleado) REFERENCES Empleado (id),
 CONSTRAINT id_cliente FOREIGN KEY (cliente) REFERENCES Cliente (id)
 );
 
 
-CREATE TABLE Bitacora_salarios
-(id number(3),
-fecha_cambio date,
-usuario varchar2 (20),
-empleado number (3),
+create TABLE Bitacora_salarios
+(id number generated always as identity,
+fecha_cambio date not null,
+usuario varchar2 (20) not null,
+empleado number (3) not null,
+salario_anterior number(7,2) not null,
+salario_nuevo number(7,2) not null,
 CONSTRAINT Bitacora_salarios_pk PRIMARY KEY (id),
 CONSTRAINT Bitacora_salarios_Empleado_fK FOREIGN KEY (empleado) REFERENCES empleado (id));
 
 CREATE TABLE Historial_Compra
-(id number(7),
-fecha date,
-costo NUMBER (7,2),
-cantidad NUMBER (3),
-provedor number (3),
+(id NUMBER GENERATED ALWAYS AS IDENTITY,
+fecha date not null,
+costo NUMBER (7,2) not null,
+cantidad NUMBER (3) not null,
+provedor number (3) not null,
 CONSTRAINT Historial_Compra PRIMARY KEY (id),
 CONSTRAINT Compras_provedor_fK FOREIGN KEY (provedor) REFERENCES provedor (id)
 );
@@ -75,8 +86,8 @@ CONSTRAINT Compras_provedor_fK FOREIGN KEY (provedor) REFERENCES provedor (id)
 --###############################################################################
 
 CREATE TABLE producto_venta
-(id_producto NUMBER (3),
-id_venta NUMBER (7),
+(id_producto NUMBER GENERATED ALWAYS AS IDENTITY,
+id_venta NUMBER (7) not null,
 CONSTRAINT producto_venta_pk PRIMARY KEY (id_producto, id_venta),
 CONSTRAINT id_producto_fK FOREIGN KEY (id_producto) REFERENCES producto (id),
 CONSTRAINT id_venta_fk FOREIGN KEY (id_venta) REFERENCES venta (id)
@@ -279,3 +290,31 @@ IS
 	END;
 	
 END package_CRUD;
+
+
+
+
+--Triggers
+    
+create or replace trigger tr_actualizar_precio
+  before update of precio
+  on producto
+  for each row
+ begin
+  insert into BITACORA_PRODUCTO values(1, :old.NOMBRE, :old.PRECIO, :new.PRECIO, sysdate);
+ end tr_actualizar_precio;
+ /
+
+
+create or replace trigger tr_actualizar_salario
+  before update of SALARIO
+  on EMPLEADO
+  for each row
+ begin
+  insert into BITACORA_SALARIOS(FECHA_CAMBIO, USUARIO, EMPLEADO, SALARIO_ANTERIOR, SALARIO_NUEVO) 
+  values(sysdate, user, :old.ID, :old.SALARIO, :new.SALARIO);
+ end tr_actualizar_salario;
+ /
+
+
+
