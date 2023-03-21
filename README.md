@@ -10,9 +10,12 @@ Semestre I, 2023
 
 Proyecto 1 - Aplicación Web
 
-Estudiantes: 
+Estudiantes:
+
 Adjany Gard Alpízar      - 2021117164
+
 David Jose Espinoza Soto - 2016012024
+
 Keylor Cruz Alfaro       - 2018015114
 
 ## Descripción del problema y la solución propuesta
