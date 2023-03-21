@@ -316,5 +316,29 @@ create or replace trigger tr_actualizar_salario
  end tr_actualizar_salario;
  /
 
+-- Funcion que resive una fecha en VARCHAR2 y devuelve el total de ventas por el mes indicado
+-- Probar con datos, no estoy seguro si funciona xd
+CREATE OR REPLACE FUNCTION ventas_mes(p_mes IN VARCHAR2)
+RETURN NUMBER
+IS
+  v_mes DATE;
+  v_total NUMBER;
+BEGIN
+  -- Convertir el mes en formato de fecha
+  v_mes := TO_DATE('01-' || p_mes || '-' || TO_CHAR(SYSDATE, 'YYYY'), 'DD-MON-YYYY');
+  
+  -- Calcular el total de ventas del mes
+  SELECT SUM(v.monto_total)
+  INTO v_total
+  FROM Venta v
+  INNER JOIN producto_venta pv ON pv.id_venta = v.id
+  WHERE TO_CHAR(v.fecha, 'MM-YYYY') = TO_CHAR(v_mes, 'MM-YYYY');
+  
+  -- Devolver el total de ventas
+  RETURN v_total;
+END;
+/
 
+-- Para llamar a la función
+--SELECT ventas_mes('03-2023') AS ventas_marzo FROM DUAL;
 
