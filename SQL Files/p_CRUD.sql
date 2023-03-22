@@ -1,8 +1,24 @@
-CREATE OR REPLACE PACKAGE package_CRUD
-IS
-	CREATE OR REPLACE PROCEDURE agregar_venta (v_id, v_fecha date, v_monto NUMBER, v_EmpleadoID NUMBER, v_clienteID number) as
+CREATE OR REPLACE PACKAGE package_CRUD AS
+    PROCEDURE agregar_venta (v_fecha date, v_monto NUMBER, v_EmpleadoID NUMBER, v_clienteID number);
+    PROCEDURE agregar_empleado (v_nombre varchar2, v_apellido1 varchar2, v_apellido2 varchar2, v_salario number, v_fecha date, v_correo varchar2, v_contacto varchar2);
+    PROCEDURE agregar_cliente (v_nombre varchar2, v_apellido1 varchar2, v_apellido2 varchar2, v_fecha date);
+    PROCEDURE agregar_provedor (v_nombre varchar2,v_fecha date);
+    PROCEDURE agregar_producto (v_nombre varchar2,v_descripcion varchar2, v_precio number);
+    PROCEDURE agregar_hcompra (v_fecha date,v_costo number, v_cantidad number, v_provedorID number);
+    PROCEDURE agregar_productoV (v_productoID number,v_ventaID number, v_precio number, v_cantidad number);
+    PROCEDURE modificar_proveedor(v_id NUMBER, v_nombre VARCHAR2, v_fecha DATE);
+    PROCEDURE modificar_producto(v_id NUMBER, v_nombre VARCHAR2, v_precio NUMBER, v_descp VARCHAR2);
+    PROCEDURE modificar_cliente(v_id NUMBER, v_nombre VARCHAR2, v_apellido1 VARCHAR2,  v_apellido2 VARCHAR2);
+    PROCEDURE modificar_empleado(v_id NUMBER, v_nombre VARCHAR2, v_apellido1 VARCHAR2, v_apellido2 VARCHAR2, v_salario NUMBER, v_correo VARCHAR2, v_contacto VARCHAR2);
+END package_CRUD;
+/
+
+CREATE OR REPLACE PACKAGE BODY package_CRUD
+AS
+
+	PROCEDURE agregar_venta (v_fecha date, v_monto NUMBER, v_EmpleadoID NUMBER, v_clienteID number) as
 	BEGIN
-		INSERT INTO Venta VALUES (v_id, v_fecha, v_monto, v_EmpleadoID, v_clienteID);
+		INSERT INTO Venta(fecha, monto_total, empleado, cliente) VALUES (v_fecha, v_monto, v_EmpleadoID, v_clienteID);
 		EXCEPTION WHEN OTHERS THEN
 		IF SQLCODE=-1 THEN
 			DBMS_OUTPUT.put_line ('Ha ocurrido un error al registrar la venta');
@@ -11,9 +27,9 @@ IS
 		END IF;
 	END;
 
-	CREATE OR REPLACE PROCEDURE agregar_empleado (v_id number,v_nombre varchar2, v_apellido1 varchar2, v_apellido2 varchar2, v_salario number, v_fecha date) as
+	PROCEDURE agregar_empleado (v_nombre varchar2, v_apellido1 varchar2, v_apellido2 varchar2, v_salario number, v_fecha date, v_correo varchar2, v_contacto varchar2) as
 	BEGIN
-		INSERT INTO Empleado VALUES (v_id, v_nombre, v_apellido1, v_apellido2, v_salario, v_fecha);
+		INSERT INTO Empleado(nombre, apellido1, apellido2, salario, fecha, correo, contacto) VALUES (v_nombre, v_apellido1, v_apellido2, v_salario, v_fecha, v_correo, v_contacto);
 		EXCEPTION WHEN OTHERS THEN
 		IF SQLCODE=-1 THEN
 			DBMS_OUTPUT.put_line ('Ha ocurrido un error al registrar al empleado');
@@ -22,9 +38,9 @@ IS
 		END IF;
 	END;
 
-	CREATE OR REPLACE PROCEDURE agregar_cliente (v_id number,v_nombre varchar2, v_apellido1 varchar2, v_apellido2 varchar2, v_fecha date) as
+	PROCEDURE agregar_cliente (v_nombre varchar2, v_apellido1 varchar2, v_apellido2 varchar2, v_fecha date) as
 	BEGIN
-		INSERT INTO Cliente VALUES (v_id, v_nombre, v_apellido1, v_apellido2, v_fecha);
+		INSERT INTO Cliente(nombre, apellido1, apellido2, fecha_registro) VALUES (v_nombre, v_apellido1, v_apellido2, v_fecha);
 		EXCEPTION WHEN OTHERS THEN
 		IF SQLCODE=-1 THEN
 			DBMS_OUTPUT.put_line ('Ha ocurrido un error al registrar al cliente');
@@ -33,9 +49,9 @@ IS
 		END IF;
 	END;
 
-	CREATE OR REPLACE PROCEDURE agregar_provedor (v_id number,v_nombre varchar2,v_fecha date) as
+	PROCEDURE agregar_provedor (v_nombre varchar2,v_fecha date) as
 	BEGIN
-		INSERT INTO Provedor VALUES (v_id, v_nombre, v_fecha);
+		INSERT INTO Provedor(nombre, fecha_registro) VALUES (v_nombre, v_fecha);
 		EXCEPTION WHEN OTHERS THEN
 		IF SQLCODE=-1 THEN
 			DBMS_OUTPUT.put_line ('Ha ocurrido un error al registrar al provedor');
@@ -44,9 +60,9 @@ IS
 		END IF;
 	END;
 
-	CREATE OR REPLACE PROCEDURE agregar_producto (v_id number,v_nombre varchar2,v_descripcion varchar2, v_precio number) as
+	PROCEDURE agregar_producto (v_nombre varchar2,v_descripcion varchar2, v_precio number) as
 	BEGIN
-		INSERT INTO Poducto VALUES (v_id, v_nombre, v_descripcion, v_precio);
+		INSERT INTO Producto(nombre, descripcion, precio) VALUES (v_nombre, v_descripcion, v_precio);
 		EXCEPTION WHEN OTHERS THEN
 		IF SQLCODE=-1 THEN
 			DBMS_OUTPUT.put_line ('Ha ocurrido un error al registrar el producto');
@@ -55,9 +71,9 @@ IS
 		END IF;
 	END;
 
-	CREATE OR REPLACE PROCEDURE agregar_hcompra (v_id number,v_fecha date,v_costo number, v_cantidad number, v_provedorID number) as
+	PROCEDURE agregar_hcompra (v_fecha date,v_costo number, v_cantidad number, v_provedorID number) as
 	BEGIN
-		INSERT INTO Poducto VALUES (v_id, v_fecha, v_costo, v_cantidad, v_provedorID);
+		INSERT INTO Historial_Compra(fecha, costo, cantidad, provedor) VALUES (v_fecha, v_costo, v_cantidad, v_provedorID);
 		EXCEPTION WHEN OTHERS THEN
 		IF SQLCODE=-1 THEN
 			DBMS_OUTPUT.put_line ('Ha ocurrido un error al registrar la bitacora');
@@ -66,9 +82,9 @@ IS
 		END IF;
 	END;
 
-	CREATE OR REPLACE PROCEDURE agregar_productoV (v_productoID number,v_ventaID number) as
+	PROCEDURE agregar_productoV (v_productoID number,v_ventaID number, v_precio number, v_cantidad number) as
 	BEGIN
-		INSERT INTO producto_venta VALUES (v_productoID, v_ventaID);
+		INSERT INTO producto_venta(id_producto, id_venta, precio, cantidad ) VALUES (v_productoID, v_ventaID, v_precio, v_cantidad);
 		EXCEPTION WHEN OTHERS THEN
 		IF SQLCODE=-1 THEN
 			DBMS_OUTPUT.put_line ('Ha ocurrido un error al registrar el producto a la venta');
@@ -79,53 +95,48 @@ IS
 	
 	-- procedimiento para modificar
 	
-	CREATE OR REPLACE PROCEDURE modificar_proveedor(v_id NUMBER, v_nombre VARCHAR2, v_fecha DATE) AS
-	DECLARE
+	PROCEDURE modificar_proveedor(v_id NUMBER, v_nombre VARCHAR2, v_fecha DATE) AS
 		nombre_original VARCHAR2(20);
 		fecha_original DATE;
 	BEGIN
-		SELECT nombre INTO nombre_original FROM Provedor
-		WHERE id = v_id AND	v_id IS NOT NULL;
+		SELECT Provedor.nombre INTO nombre_original FROM Provedor
+		WHERE Provedor.id = v_id;
 		
-		SELECT fecha_registro INTO fecha_original FROM Provedor
-		WHERE id = v_id AND	v_id IS NOT NULL;
+		SELECT Provedor.fecha_registro INTO fecha_original FROM Provedor
+		WHERE Provedor.id = v_id;
 		
 		UPDATE Provedor
 		SET
 			nombre = NULLIF(v_nombre, nombre_original),
-			fecha_registro = NULLIF(v_fecha, fecha_original),
+			fecha_registro = NULLIF(v_fecha, fecha_original)
 		WHERE
-			id = v_id AND
-			v_id IS NOT NULL;
+			Provedor.id = v_id;
 	END;
 	
-	CREATE OR REPLACE PROCEDURE modificar_producto(v_id NUMBER, v_nombre VARCHAR2, v_precio NUMBER, v_descp VARCHAR2) AS
-	DECLARE
+	PROCEDURE modificar_producto(v_id NUMBER, v_nombre VARCHAR2, v_precio NUMBER, v_descp VARCHAR2) AS
 		nombre_original VARCHAR2(20);
 		descripcion_original VARCHAR2(100);
 		precio_original NUMBER(6,2);
 	BEGIN
-		SELECT nombre INTO nombre_original FROM Producto
-		WHERE id = v_id AND	v_id IS NOT NULL;
+		SELECT Producto.nombre INTO nombre_original FROM Producto
+		WHERE Producto.id = v_id;
 		
-		SELECT descripcion INTO descripcion_original FROM Producto
-		WHERE id = v_id AND	v_id IS NOT NULL;
+		SELECT Producto.descripcion INTO descripcion_original FROM Producto
+		WHERE Producto.id = v_id;
 		
-		SELECT precio INTO precio_original FROM Producto
-		WHERE id = v_id AND	v_id IS NOT NULL;
+		SELECT Producto.precio INTO precio_original FROM Producto
+		WHERE Producto.id = v_id;
 		
 		UPDATE Producto
 		SET
 			nombre = NULLIF(v_nombre, nombre_original),
 			descripcion = NULLIF(v_descp, descripcion_original),
-			precio_original = NULLIF(v_precio, precio_original),
+			precio = NULLIF(v_precio, precio_original)
 		WHERE
-			id = v_id AND
-			v_id IS NOT NULL;
+			Producto.id = v_id;
 	END;
 	
-	CREATE OR REPLACE PROCEDURE modificar_cliente(v_id NUMBER, v_nombre VARCHAR2, v_apellido1 VARCHAR2,  v_apellido2 VARCHAR2) AS
-	DECLARE
+	PROCEDURE modificar_cliente(v_id NUMBER, v_nombre VARCHAR2, v_apellido1 VARCHAR2,  v_apellido2 VARCHAR2) AS
 		nombre_original VARCHAR2(20);
 		apellido1_original VARCHAR2(20);
 		apellido2_original VARCHAR2(20);
@@ -143,15 +154,15 @@ IS
 		SET
 			nombre = NULLIF(v_nombre, nombre_original),
 			apellido1 = NULLIF(v_apellido1, apellido1_original),
-			apellido2 = NULLIF(v_apellido2, apellido2_original),
+			apellido2 = NULLIF(v_apellido2, apellido2_original)
 		WHERE
 			id = v_id AND
 			v_id IS NOT NULL;
 	END;
 	
-	CREATE OR REPLACE PROCEDURE modificar_empleado(v_id NUMBER, v_nombre VARCHAR2, v_apellido1 VARCHAR2,
-		v_apellido2 VARCHAR2, v_salario NUMBER, v_correo VARCHAR2, v_contacto VARCHAR2) AS
-	DECLARE
+	PROCEDURE modificar_empleado(v_id NUMBER, v_nombre VARCHAR2, v_apellido1 VARCHAR2,
+		v_apellido2 VARCHAR2, v_salario NUMBER, v_correo VARCHAR2, v_contacto VARCHAR2) 
+    AS
 		nombre_original VARCHAR2(20);
 		apellido1_original VARCHAR2(20);
 		apellido2_original VARCHAR2(20);
@@ -184,10 +195,11 @@ IS
 			apellido2 = NULLIF(v_apellido2, apellido2_original),
 			salario = NULLIF(v_salario, salario_original),
 			correo = NULLIF(v_correo, correo_original),
-			contacto = NULLIF(v_contacto, contacto_original),
+			contacto = NULLIF(v_contacto, contacto_original)
 		WHERE
 			id = v_id AND
 			v_id IS NOT NULL;
 	END;
 	
 END package_CRUD;
+/
