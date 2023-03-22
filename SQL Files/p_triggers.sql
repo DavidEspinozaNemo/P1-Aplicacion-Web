@@ -5,7 +5,8 @@ create or replace trigger tr_actualizar_precio
   on producto
   for each row
  begin
-  insert into BITACORA_PRODUCTO values(1, :old.NOMBRE, :old.PRECIO, :new.PRECIO, sysdate);
+  insert into BITACORA_PRODUCTO (id_producto, precio_viejo, precio_nuevo, nombre_producto, fecha_cambio)
+    values( :old.ID, :old.PRECIO,:new.PRECIO, :old.NOMBRE , sysdate);
  end tr_actualizar_precio;
  /
 
