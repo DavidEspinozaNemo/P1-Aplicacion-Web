@@ -19,6 +19,12 @@ CREATE OR REPLACE PACKAGE package_CRUD AS
     PROCEDURE eliminar_historial_compra( v_id_hist_compra number );
     PROCEDURE eliminar_bitacora_salario( v_id_bit_salar number );
     PROCEDURE eliminar_bitacora_producto( v_id_bit_prod number );
+    PROCEDURE mostrar_info_productos (t_result OUT SYS_REFCURSOR);
+    PROCEDURE mostrar_info_productos_cambios (t_result OUT SYS_REFCURSOR);
+    PROCEDURE mostrar_info_clientes_compras (t_result OUT SYS_REFCURSOR);
+    PROCEDURE mostrar_info_empleados_ventas (t_result OUT SYS_REFCURSOR);
+    PROCEDURE mostrar_info_empleados_cambios_salarios (t_result OUT SYS_REFCURSOR);
+    PROCEDURE mostrar_info_empleados_aumentos (t_result OUT SYS_REFCURSOR);
 END package_CRUD;
 /
 
@@ -385,6 +391,83 @@ AS
         EXCEPTION WHEN OTHERS THEN
             ROLLBACK;        
             DBMS_OUTPUT.PUT_LINE('Error al eliminar el venta');
+    END;
+    
+    -- muestra algunas tablas
+    
+    PROCEDURE mostrar_info_productos (t_result OUT SYS_REFCURSOR)
+    IS
+    BEGIN
+        OPEN t_result FOR
+        SELECT pr.nombre as "PRODUCTO", pr.precio as "PRECIO", SUM(hc.costo) as "COSTOS", SUM(hc.cantidad) as "CANTIDAD", pv.nombre as "FROM"
+        FROM historial_compra hc
+        INNER JOIN producto pr ON hc.id = pr.id
+        INNER JOIN provedor pv ON hc.provedor = pv.id
+        GROUP BY pr.nombre, pr.precio, pv.nombre
+        ORDER BY pr.nombre, pr.precio, pv.nombre;
+    END;
+    
+    PROCEDURE mostrar_info_productos_cambios (t_result OUT SYS_REFCURSOR)
+    IS
+    BEGIN
+        OPEN t_result FOR
+        SELECT pr.nombre as "PRODUCTO", bp.precio_viejo as "PRECIO VIEJO", bp.precio_nuevo as "PRECIO NUEVO",
+            (( bp.precio_nuevo - bp.precio_viejo ) / bp.precio_viejo * 100) as "INCREMENTO",
+            bp.fecha_cambio as "FECHA CAMBIO"
+        FROM bitacora_producto bp
+        INNER JOIN producto pr ON bp.id_producto = pr.id
+        ORDER BY pr.nombre;
+    END;
+    
+    PROCEDURE mostrar_info_clientes_compras (t_result OUT SYS_REFCURSOR)
+    IS
+    BEGIN
+        OPEN t_result FOR
+        SELECT cl.nombre as "CLIENTE", vt.id as "VENTA", vt.monto_total as "TOTAL", pr.nombre as "PRODUCTO",
+            pv.precio as "PRECIO", pv.cantidad as "CANTIDAD"
+        FROM cliente cl
+        INNER JOIN venta vt ON vt.cliente = cl.id
+        INNER JOIN producto_venta pv ON pv.id_venta = vt.id
+        INNER JOIN producto pr ON pv.id_producto = pr.id
+        ORDER BY cl.nombre;
+    END;
+    
+    PROCEDURE mostrar_info_empleados_ventas (t_result OUT SYS_REFCURSOR)
+    IS
+    BEGIN
+        OPEN t_result FOR
+        SELECT emp.nombre as "EMPLEADO", emp.apellido1 as "APELLIDO", SUM(pv.precio * pv.cantidad) as "TOTAL", 
+            EXTRACT( YEAR FROM vt.fecha ) as "YEAR", EXTRACT( MONTH FROM vt.fecha ) "MONTH", EXTRACT( DAY FROM vt.fecha ) "DAY"
+        FROM empleado emp
+        INNER JOIN venta vt ON vt.empleado = emp.id
+        INNER JOIN producto_venta pv ON vt.id = pv.id_venta
+        GROUP BY emp.nombre, emp.apellido1, vt.fecha
+        ORDER BY emp.nombre, emp.apellido1, vt.fecha; 
+    END;
+    
+    PROCEDURE mostrar_info_empleados_cambios_salarios (t_result OUT SYS_REFCURSOR)
+    IS
+    BEGIN
+        OPEN t_result FOR
+        SELECT emp.nombre as "EMPLEADO", emp.apellido1 as "APELLIDO 1", emp.apellido2 as "APELLIDO 2", emp.salario as "SALARIO ACTUAL",
+            emp.correo as "CORREO", emp.contacto as "CONTACTO", EXTRACT( YEAR FROM bs.fecha_cambio ) as "YEAR", EXTRACT( MONTH FROM bs.fecha_cambio ) "MONTH", 
+            EXTRACT( DAY FROM bs.fecha_cambio ) "DAY"
+        FROM bitacora_salarios bs
+        INNER JOIN empleado emp ON bs.empleado = emp.id
+        GROUP BY emp.nombre, emp.apellido1, emp.apellido2, bs.fecha_cambio, emp.salario, emp.correo, emp.contacto
+        ORDER BY emp.nombre, emp.apellido1, emp.apellido2, bs.fecha_cambio, emp.salario, emp.correo, emp.contacto;
+    END;
+    
+    PROCEDURE mostrar_info_empleados_aumentos (t_result OUT SYS_REFCURSOR)
+    IS
+    BEGIN
+        OPEN t_result FOR
+        SELECT emp.nombre as "EMPLEADO", EXTRACT( YEAR FROM bs.fecha_cambio ) as "YEAR", EXTRACT( MONTH FROM bs.fecha_cambio ) "MONTH", EXTRACT( DAY FROM bs.fecha_cambio ) "DAY",
+            SUM(bs.salario_nuevo) / COUNT(bs.salario_nuevo) as "PROMEDIO SALARIO"
+        FROM bitacora_salarios bs
+        INNER JOIN empleado emp ON bs.empleado = emp.id
+        GROUP BY emp.nombre, bs.fecha_cambio, bs.salario_nuevo, bs.salario_anterior
+        ORDER BY emp.nombre, bs.fecha_cambio, bs.salario_nuevo, bs.salario_anterior;
     END;
 	
 END package_CRUD;
