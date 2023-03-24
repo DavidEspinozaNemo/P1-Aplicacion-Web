@@ -25,7 +25,7 @@
 
               <div class="form-group col-md-6">
                 <label for="number">Nuevo salario: </label>
-                <input type="number" class="form-control" id="salario" placeholder="000000.00" maxlength="9">
+                <input type="number" name="salario" class="form-control" id="salario" placeholder="000000.00" maxlength="9">
               </div>
             
           </form>
