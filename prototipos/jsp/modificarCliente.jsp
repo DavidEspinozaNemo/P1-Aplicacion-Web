@@ -23,7 +23,7 @@
 
             <div class="form-group col-md-6">
                 <label for="text">Nuevo nombre: </label>
-                <input type="text" class="form-control" id="nombre" placeholder="Martin">
+                <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Martin">
               </div>
             <button type="submit" class="btn btn-primary">Modificar</button>
 
