@@ -24,12 +24,12 @@
 
             <div class="form-group col-md-6">
                 <label for="email">Nombre: </label>
-                <input type="email" class="form-control" id="correo" placeholder="ejemplo@email.com">
+                <input type="email" name = "correo" class="form-control" id="correo" placeholder="ejemplo@email.com">
               </div>
 
               <div class="form-group col-md-6">
                 <label for="text">Contraseña: </label>
-                <input type="password" class="form-control" id="clave">
+                <input type="password" name = "clave" class="form-control" id="clave">
               </div>
   
 
