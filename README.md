@@ -34,17 +34,3 @@ La aplicación debe seguir la arquitectura de capas (al menos 3). Para la implem
 Deberán escoger una de las entidades (tablas) en su modelo y sobre ella implementar mediante el uso de disparadores (triggers) una funcionalidad de tipo bitácora para llevar una auditoría de los cambios que se realicen sobre los datos. Por ejemplo, si se cambia el precio o descripción de un producto, se deberá crear una entrada en la tabla bitácora en donde se registre, la fecha y hora del cambio, usuario que la realizó, y el valor modificado. 
 
 Todos los objetos creados a nivel de la base de datos (tablas, trigger, paquetes, secuencias, índices, etc.) deben pertenecer a un usuario/esquema con un nombre significativo.
-
-### La Propuesta
-mmm
-## Descripción del sistema y su alcance
-mmm
-
-## Modelo de objetos
-mmm
-
-
-## Diagrama Entidad-Relación 
-mmm
-
-
