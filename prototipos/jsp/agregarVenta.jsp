@@ -24,22 +24,22 @@
             <div class="form-row">
               <div class="form-group col-md-6">
                 <label for="date">Fecha: </label>
-                <input type="date" class="form-control" id="date">
+                <input type="date" name = "date" class="form-control" id="date">
               </div>
               <div class="form-group col-md-6">
                 <label for="number">Total vendido: </label>
-                <input type="number" class="form-control" id="total" placeholder="000000.00">
+                <input type="number" name = "total" class="form-control" id="total" placeholder="000000.00">
               </div>
             </div>
             <div class="form-group col-md-6">
               <label for="text">Nombre empleado: </label>
-              <input type="text" class="form-control" id="nombre" placeholder="Martin">
+              <input type="text" name = "nombre" class="form-control" id="nombre" placeholder="Martin">
             </div>
 
 
             <div class="form-group col-md-6">
               <label for="text">Nombre cliente: </label>
-              <input type="text" class="form-control" id="nombre" placeholder="Martin">
+              <input type="text" name = "nombre" class="form-control" id="nombre" placeholder="Martin">
             </div>
 
             <br>
