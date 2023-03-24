@@ -23,24 +23,24 @@
 
             <div class="form-group col-md-6">
                 <label for="text">Nombre: </label>
-                <input type="text" name = "nombre" class="form-control" id="nombre" placeholder="Martin">
+                <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Martin">
               </div>
 
               <div class="form-group col-md-6">
                 <label for="text">Apellido 1: </label>
-                <input type="text" name = "apellido1" class="form-control" id="apellido1" placeholder="Martin">
+                <input type="text" name="apellido1" class="form-control" id="apellido1" placeholder="Martin">
               </div>
 
               <div class="form-group col-md-6">
                 <label for="text">Apellido 2: </label>
-                <input type="text" name = "apellido2" class="form-control" id="apellido2" placeholder="Martin">
+                <input type="text" name="apellido2" class="form-control" id="apellido2" placeholder="Martin">
               </div>
             
 
               <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="date">Fecha de registro: </label>
-                  <input type="date" name = "fecha" class="form-control" id="fecha">
+                  <input type="date" name="fecha" class="form-control" id="fecha">
                 </div>
             
           </form>
