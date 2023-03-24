@@ -24,7 +24,7 @@
 
             <div class="form-group col-md-6">
                 <label for="number">Nuevo precio: </label>
-                <input type="number" class="form-control" id="total" placeholder="000000.00">
+                <input type="number" name="total" class="form-control" id="total" placeholder="000000.00">
               </div>
             </div>
 
