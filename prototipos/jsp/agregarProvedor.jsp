@@ -24,13 +24,13 @@
         <form>
             <div class="form-group col-md-6">
               <label for="text">Nombre provedor: </label>
-              <input type="text" class="form-control" id="nombre" placeholder="Martin">
+              <input type="text" name = "nombre"  class="form-control" id="nombre" placeholder="Martin">
             </div>
 
             <div class="form-row">
                 <div class="form-group col-md-6">
                   <label for="date">Fecha registro: </label>
-                  <input type="date" class="form-control" id="date">
+                  <input type="date" name = "date" class="form-control" id="date">
                 </div>
             </form>
                 <br>
