@@ -20,6 +20,10 @@ public class Producto {
         this.precio = precio;
     }
 
+    public Producto() {
+    }
+    
+
     public String getNombreProd() {
         return nombreProd;
     }

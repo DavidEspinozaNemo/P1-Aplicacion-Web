@@ -21,10 +21,12 @@
 
         <br>
 
-        <form>
+        <form action="SvModificarProvedor" method="POST">
             <div class="form-group col-md-6">
               <label for="text">Nuevo nombre: </label>
               <input type="text" name="nombre" class="form-control" id="nombre" placeholder="Martin">
+              <label for="number">Id del Provedor: </label>
+                <input type="number" name="id" class="form-control" id="id" placeholder="00" maxlength="9">
             </div>
                 <br>
                 <button type="submit" class="btn btn-primary">Modificar</button>

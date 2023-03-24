@@ -21,11 +21,13 @@
 
         <br>
 
-        <form>
+        <form action="SvModificarEmpleado" method="POST">
 
               <div class="form-group col-md-6">
                 <label for="number">Nuevo salario: </label>
                 <input type="number" name="salario" class="form-control" id="salario" placeholder="000000.00" maxlength="9">
+                <label for="number">Id del Empleado: </label>
+                <input type="number" name="id" class="form-control" id="id" placeholder="00" maxlength="9">
               </div>
             
           </form>

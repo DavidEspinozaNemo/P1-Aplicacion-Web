@@ -19,7 +19,7 @@
     <h2> Agregando cliente </h2>
     <br>
     <header>
-        <form>
+        <form action="SvAgregarCliente" method="POST">
 
             <div class="form-group col-md-6">
                 <label for="text">Nombre: </label>

@@ -206,13 +206,13 @@ public class BeautySalonBO {
                 } else {
                 }
             } catch (Exception e) {
-                mensaje = mensaje + " " + e.getMessage();
+                
             }
         }
         return mensaje;
     }
     
-    public String modificarEmpleado(Provedor prov, int id){
+    public String modificarProvedor(Provedor prov, int id){
         Connection conn = Conexion.getConnection();
         try {
             mensaje = bsDAO.modificarProvedor(conn, prov, id);
@@ -505,50 +505,5 @@ public class BeautySalonBO {
         }
         return mensaje;
     }
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
+           
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-

@@ -20,11 +20,13 @@
   <br>
     <header>
 
-        <form>
+        <form action="SvModificarProducto" method="POST">
 
             <div class="form-group col-md-6">
                 <label for="number">Nuevo precio: </label>
                 <input type="number" name="total" class="form-control" id="total" placeholder="000000.00">
+                <label for="number">Id del Producto: </label>
+                <input type="number" name="id" class="form-control" id="id" placeholder="00" maxlength="9">
               </div>
             </div>
 

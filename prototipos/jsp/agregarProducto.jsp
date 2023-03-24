@@ -20,7 +20,7 @@
   <br>
     <header>
 
-        <form>
+        <form action="SvAgregarProducto" method="POST">
 
             <div class="form-group col-md-6">
               <label for="text">Nombre: </label>

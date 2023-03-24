@@ -21,7 +21,7 @@
 
         <br>
 
-        <form>
+        <form action="SvAgregarProvedor" method="POST">
             <div class="form-group col-md-6">
               <label for="text">Nombre provedor: </label>
               <input type="text" name = "nombre"  class="form-control" id="nombre" placeholder="Martin">

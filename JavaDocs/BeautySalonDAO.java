@@ -12,7 +12,6 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
-import javax.swing.JTable;
 
 /**
  *
@@ -32,7 +31,7 @@ public class BeautySalonDAO {
             pst.setString(2, emp.getApellido1());
             pst.setString(3, emp.getApellido2());
             pst.setInt(4, emp.getSalario());
-            pst.setDate(5, (Date) emp.getFecha());
+            pst.setDate(5, (Date)emp.getFecha());
             pst.setString(6, emp.getCorreo());
             pst.setString(7, emp.getContacto());
             mensaje = "Guardado Exitosamente";
@@ -143,7 +142,7 @@ public class BeautySalonDAO {
     
     
     
-            public String agregarProvedor(Connection conn, Provedor prov){
+        public String agregarProvedor(Connection conn, Provedor prov){
         CallableStatement pst = null;
         String sql = "call PACKAGE_CRUD.agregar_provedor(?,?)";
         
@@ -164,7 +163,7 @@ public class BeautySalonDAO {
     public String modificarProvedor(Connection conn, Provedor prov, int id){
         
         PreparedStatement pst = null;
-        String sql = "call PACKAGE_CRUD.modificar_provedor(v_id => ?, v_nombre => ?)"; 
+        String sql = "call PACKAGE_CRUD.modificar_proveedor(v_id => ?, v_nombre => ?)"; 
         
         try {
             pst = conn.prepareCall(sql);
@@ -226,7 +225,7 @@ public class BeautySalonDAO {
         try {
             pst = conn.prepareCall(sql);
             pst.setInt(1, id);
-            pst.setInt(3, prod.getPrecio());
+            pst.setInt(2, prod.getPrecio());
             mensaje = "Modificado Exitosamente";
             pst.execute();
             pst.close();
@@ -378,10 +377,4 @@ public class BeautySalonDAO {
         }
         return mensaje;
     }
-    
-
-    
-    
-    
-    
 }

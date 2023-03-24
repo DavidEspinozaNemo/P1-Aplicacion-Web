@@ -22,6 +22,9 @@ public class Provedor {
         this.fecha_registro = fecha_registro;
     }
 
+    public Provedor() {
+    }
+
     public String getNombre_prov() {
         return nombre_prov;
     }

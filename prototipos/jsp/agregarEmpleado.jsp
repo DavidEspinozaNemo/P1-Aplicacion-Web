@@ -21,7 +21,7 @@
 
         <br>
 
-        <form action="SvEmpleado" method="POST">
+        <form action="SvAgregarEmpleado" method="POST">
 
             <div class="form-group col-md-6">
                 <label for="text">Nombre: </label>

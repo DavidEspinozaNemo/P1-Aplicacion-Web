@@ -24,6 +24,11 @@ public class Cliente {
         this.fecha = fecha;
     }
 
+    public Cliente() {
+    }
+    
+    
+
     public String getNombreCle() {
         return nombreCle;
     }
