@@ -24,19 +24,19 @@
 
             <div class="form-group col-md-6">
               <label for="text">Nombre: </label>
-              <input type="text" class="form-control" id="nombre" placeholder="Esmalte">
+              <input type="text" name = "nombre" class="form-control" id="nombre" placeholder="Esmalte">
             </div>
 
 
             <div class="form-group col-md-6">
               <label for="text">Descripcion: </label>
-              <input type="text" class="form-control" id="descripcion" placeholder="Utilizado para...">
+              <input type="text" name = "descripcion" class="form-control" id="descripcion" placeholder="Utilizado para...">
             </div>
 
 
             <div class="form-group col-md-6">
                 <label for="number">Precio: </label>
-                <input type="number" class="form-control" id="total" placeholder="000000.00">
+                <input type="number" name = "total" class="form-control" id="total" placeholder="000000.00">
               </div>
             </div>
 
